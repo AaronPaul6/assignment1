@@ -2,24 +2,24 @@
 # See: https://circleci.com/docs/configuration-reference
 version: 2.1
 
+# Define the jobs we want to run for this project
 jobs:
   build:
     docker:
-      - image: circleci/openjdk:11-jdk
-    working_directory: ~/repo
-
+      - image: cimg/base:2023.03
     steps:
       - checkout
+      - run: echo "this is the build job"
+  test:
+    docker:
+      - image: cimg/base:2023.03
+    steps:
+      - checkout
+      - run: echo "this is the test job"
 
-      # Install any necessary dependencies
-      - run: <dependency_installation_command>
-
-      # Build and test the program
-      - run: <build_command>
-      - run: <test_command>
-
-      # Optionally, include error reporting tools
-      - run: <error_reporting_command>
-
-      # Deploy the program to a container
-      - run: <deployment_command>
+# Orchestrate our job run sequence
+workflows:
+  build_and_test:
+    jobs:
+      - build
+      - test
